@@ -1,7 +1,7 @@
 import networkx as nx
 import numpy as np
 
-def generate_model(G: nx.Graph, n: int, m: int, m0: int, seed: int = 0) -> nx.Graph:
+def generate_model(G: nx.Graph, n: int, m: int, m0: int, seed: int = 0, nodes: tuple[int] = (2, 70)) -> tuple[nx.Graph, list, list]:
     """
     Generates a Barabási-Albert model graph with n nodes, m0 starting nodes and parameter m.
     """
@@ -16,6 +16,12 @@ def generate_model(G: nx.Graph, n: int, m: int, m0: int, seed: int = 0) -> nx.Gr
             G.add_edge(i, j)
 
     nodes_array = np.array(list(range(m0))*(m0-1)) # Create initial nodes array
+
+    # define 2 nodes that we will count the degree of
+    node1 = nodes[0] + m0
+    node2 = nodes[1] + m0
+    degrees_node1 = []
+    degrees_node2 = []
     
     # Add n - m0 nodes to the graph
     for i in range(m0, n):
@@ -26,5 +32,11 @@ def generate_model(G: nx.Graph, n: int, m: int, m0: int, seed: int = 0) -> nx.Gr
             nodes_array = np.append(nodes_array, node) # Add the chosen node to the nodes array
             nodes_array = np.append(nodes_array, i) # Add the new node to the nodes array
             G.add_edge(i, node)
+        
+        # Calculate the degree of the two nodes
+        if i >= node1:
+            degrees_node1.append(G.degree[node1])
+        if i >= node2:
+            degrees_node2.append(G.degree[node2])
     
-    return G
+    return G, degrees_node1, degrees_node2
