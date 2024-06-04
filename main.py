@@ -1,4 +1,4 @@
-from model import generate_model
+from model import generate_BA_model, generate_random_attachment_model
 import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
@@ -9,7 +9,8 @@ m=3
 m0=4
 nodes = (2, 70)
 n = 10000
-G, degrees1, degrees2 = generate_model(G, n=n, m=m, m0=m0, seed=np.random.randint(100), nodes=nodes)
+G, degrees1, degrees2 = generate_BA_model(G, n=n, m=m, m0=m0, seed=np.random.randint(100), nodes=nodes)
+# G, degrees1, degrees2 = generate_random_attachment_model(G, n=n, m=m, m0=m0, seed=np.random.randint(100), nodes=nodes)
 
 degree_freq = nx.degree_histogram(G)
 degrees = range(len(degree_freq))
